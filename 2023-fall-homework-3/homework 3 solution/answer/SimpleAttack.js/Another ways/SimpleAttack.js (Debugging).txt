@@ -1,0 +1,56 @@
+class SimpleAttack {
+  constructor(name, damage, probability) {
+    this.name = name;
+    this.damage = damage;
+    this.probability = probability;
+  }
+}
+
+class Backpointer {
+  constructor(attack, totalTurn) {
+    this.attack = attack;
+    this.totalTurn = totalTurn;
+  }
+}
+
+function planAttacks(attacks, maximumHealth) {
+  const backpointers = [new Backpointer(undefined, 0)];
+
+  for (let currentHealth = 1; currentHealth <= maximumHealth; currentHealth++) {
+    console.log('*** Beginning the loop');
+    let best = new Backpointer(undefined, Infinity);
+    console.log(`*** Current Health: ${currentHealth}`);
+    for (const attack of attacks) {
+      let previousHealth = 0;
+      let candidate = undefined;
+      const turn = 1 / attack.probability;
+
+      if (currentHealth <= attack.damage) {
+        previousHealth = 0;
+      } else {
+        previousHealth = currentHealth - attack.damage;
+      }
+
+      candidate = new Backpointer(attack, turn + backpointers[previousHealth].totalTurn);
+      console.log('1. This is candidate: ', candidate);
+      if (candidate.totalTurn < best.totalTurn) {
+        best = candidate;
+      }
+      console.log('2. This is best: ', best);
+    }
+    backpointers.push(best); // Check this line
+    console.log('3. This the backpointers: ', backpointers);
+  }
+
+  const bestAttacks = [];
+  for (const simpleAttack of backpointers) {
+      bestAttacks.push(simpleAttack.attack);
+  }
+  return bestAttacks;
+}
+
+const a = new SimpleAttack('A', 1, 3 / 4);
+const b = new SimpleAttack('B', 3, 7 / 12);
+const c = new SimpleAttack('C', 6, 5 / 12);
+console.log('This is the result: ', planAttacks([a,b,c],6));
+//Expected output: [undefinde, a, b, b, c, c, c]

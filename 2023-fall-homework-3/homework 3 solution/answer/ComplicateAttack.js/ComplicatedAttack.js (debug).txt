@@ -1,0 +1,41 @@
+class Outcome {
+  constructor(damage, probability) {
+    this.damage = damage;
+    this.probability = probability;
+  }
+}
+
+class ComplexAttack {
+  constructor(name, ...damageProbabilityPairs) {
+    console.assert(damageProbabilityPairs.length % 2 === 0);
+    this.name = name;
+    this.outcomes = [];
+    this.probability = 0;
+    for (let i = 0; i < damageProbabilityPairs.length; i += 2) {
+      const outcome = new Outcome(damageProbabilityPairs[i], damageProbabilityPairs[i + 1]);
+      this.outcomes.push(outcome);
+      this.probability += outcome.probability;
+    }
+  }
+}
+
+function findMinDamage(attack) {
+  let minimum = Infinity;
+  for (const outcome of attack) {
+    if (outcome.damage < minimum) {
+      minimum = outcome.damage;
+    }
+  }
+  return minimum;
+}
+
+
+const heavy = new ComplexAttack('Heavy', 2, 1 / 2);
+const fast = new ComplexAttack('Fast', 2, 1 / 4, 1, 1 / 2);
+console.log(heavy)
+console.log(fast)
+const list = [heavy, fast]
+for (const outcome of list) {
+    const minimum = findMinDamage(outcome.outcomes);
+    console.log(minimum);        
+}

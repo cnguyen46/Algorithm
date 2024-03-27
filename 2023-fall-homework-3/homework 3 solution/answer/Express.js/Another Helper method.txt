@@ -1,0 +1,25 @@
+  getTimeOnOverlap(source, destination) {
+    if (this.destination < source || this.source > destination) {
+      return 0;
+    }
+    let usingOnlyLocalTrain = undefined;
+    let usingExpressTrain = getDirectTravelTime(source, destination);
+    if (this.source <= source && this.destination >= destination) {
+      usingOnlyLocalTrain = getLocalTrainTravelTime(source, destination);
+    } else if (this.source <= source && this.destination <= destination) {
+      usingOnlyLocalTrain = getLocalTrainTravelTime(source, this.destination);
+      usingExpressTrain += getLocalTrainTravelTime(this.destination, destination);
+    } else if (this.source >= source && this.destination >= destination) {
+      usingOnlyLocalTrain = getLocalTrainTravelTime(this.source, destination);
+      usingExpressTrain += getLocalTrainTravelTime(source, this.source);
+    } else if (this.source >= source && this.destination <= destination) {
+      usingOnlyLocalTrain = getLocalTrainTravelTime(this.source, this.destination);
+      usingExpressTrain += getLocalTrainTravelTime(source, this.source) +
+      getLocalTrainTravelTime(this.destination, destination);
+    }
+    if (usingOnlyLocalTrain < usingExpressTrain) {
+      return usingOnlyLocalTrain;
+    }
+    return usingExpressTrain;
+  }
+}
