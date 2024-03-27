@@ -1,0 +1,29 @@
+function findNarrowestGapBetweenMinima(list) {
+    let minimum = Infinity ;
+    let gap = Infinity ;
+    let indexOfLastMinimum = undefined ;
+    let currentIndex = 0;
+    for (const element of list) {
+        console.log('*** Begin looping at element: ', element);
+        if (element < minimum) {
+            minimum = element;
+            gap = Infinity;
+            indexOfLastMinimum = currentIndex;
+            console.log('3a. indexOfLastMinimum: ', indexOfLastMinimum);
+        } else if ( element === minimum ) {
+            gap = Math.min(gap, currentIndex - indexOfLastMinimum);
+            console.log('3b. indexOfLastMinimum: ', indexOfLastMinimum);
+            indexOfLastMinimum = currentIndex;
+        }
+        console.log('1. gap: ', gap);
+        console.log('2. Minimum: ', minimum);
+        console.log('3. indexOfLastMinimum: ', indexOfLastMinimum);
+        console.log('4. Currrent index: ', currentIndex);
+        ++ currentIndex ;
+        console.log('5. Length: ', currentIndex)
+    }
+    return gap;
+}
+
+const sequence = [40, 50, 40, 40, 20, 30, 20, 50];
+console.log(findNarrowestGapBetweenMinima (sequence));
