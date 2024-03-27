@@ -1,0 +1,171 @@
+/* This is the Priority Queue */
+class PriorityQueue {
+  constructor() {
+    this._vertices = [];
+  }
+
+  get size() {
+    return this._vertices.length;
+  }
+
+  insert(element, measure) {
+    let index = this._vertices.length;
+    while (index > 0) {
+      const parentIndex = Math.floor((index - 1) / 2);
+      const parent = this._vertices[parentIndex];
+      if (parent.measure < measure) {
+        break;
+      }
+      this._vertices[index] = parent;
+      index = parentIndex;
+    }
+    this._vertices[index] = {
+      element,
+      measure,
+    };
+  }
+
+  remove() {
+    console.assert(this._vertices.length > 0, 'Cannot remove an element from an empty priority queue');
+    const result = this._vertices[0].element;
+    const vertex = this._vertices[this._vertices.length - 1];
+    for (let index = 0; ;) {
+      this._vertices[index] = vertex;
+      let swapIndex = index;
+      for (const candidateIndex of [2 * index + 1, 2 * index + 2]) {
+        if (candidateIndex < this._vertices.length - 1 &&
+            this._vertices[candidateIndex].measure < this._vertices[swapIndex].measure) {
+          swapIndex = candidateIndex;
+        }
+      }
+      if (swapIndex === index) {
+        this._vertices[index] = vertex;
+        this._vertices.pop();
+        return result;
+      }
+      this._vertices[index] = this._vertices[swapIndex];
+      index = swapIndex;
+    }
+  }
+}
+
+
+/* This is the Best First Search (BFS) */
+let explorationCounter = 0;
+
+class Edge {
+  constructor(from, action, to, distance = undefined) {
+    this.from = from;
+    this.action = action;
+    this.to = to;
+    this.distance = distance;
+  }
+}
+
+class ExplorationObserver {
+  constructor() {
+    this.baseline = explorationCounter;
+  }
+
+  get explorationCount() {
+    return explorationCounter - this.baseline;
+  }
+}
+
+function bestFirst(source, heuristic, isDestination) {
+  const backpointers = new Map();
+  const worklist = new PriorityQueue();
+  worklist.insert(new Edge(undefined, undefined, source, 0), heuristic(source));
+  while (worklist.size > 0) {
+    const workitem = worklist.remove();
+    if (backpointers.has(`${workitem.to}`) &&
+      backpointers.get(`${workitem.to}`).distance <= workitem.distance) {
+      continue;
+    }
+    backpointers.set(`${workitem.to}`, workitem);
+    if (isDestination(workitem.to)) {
+      const reversedPath = [];
+      for (let current = workitem;
+        current.from !== undefined;
+        current = backpointers.get(`${current.from}`)) {
+        reversedPath.push(current);
+      }
+      return reversedPath.reverse();
+    }
+    for (const { action, child, cost } of workitem.to.incidences) {
+      if (cost.constructor !== Number) {
+        throw new Error(
+          'Incidence does not have a valid cost; did you forget to include one after changing to heuristic search?',
+        );
+      }
+      worklist.insert(
+        new Edge(workitem.to, action, child, workitem.distance + cost),
+        workitem.distance + cost + heuristic(child),
+      );
+      ++explorationCounter;
+    }
+  }
+  return undefined;
+}
+
+/* This is the main program */
+class Vertex {
+  constructor(board, pawnLocations, stepCount) {
+    this.board = board;
+    this.pawnLocations = [...pawnLocations].sort();
+    this.stepCount = stepCount;
+  }
+
+  get incidences() {
+    const results = [];
+    // Implement this getter per the assignment instructions.
+    for (const [index, value] of this.pawnLocations.entries()) {
+      if (value >= this.stepCount) {
+        /* If the current pawn moves out of the board, stop and start to move another pawn.
+        If not, update the new Location of the current pawn.*/
+        const updatedLocations = [...this.pawnLocations];
+        updatedLocations[index] = value - this.stepCount;
+        // console.log('2. This is the cost: ', value - newLocation)
+        results.push({
+          action: value,
+          child: new Vertex(this.board, updatedLocations, this.board[updatedLocations[index]]),
+          cost: 1,
+        });
+      }
+    }
+    return results;
+  }
+
+  get heuristic() {
+    // Implement this getter per the assignment instructions.
+    let distanceToGoal = 0;
+    for (const location of this.pawnLocations) {
+      distanceToGoal += location;
+    }
+    console.log('3. This is the distance from current stage to goal: ', distanceToGoal)
+    return distanceToGoal;
+  }
+
+  get isDestination() {
+    return this.pawnLocations[this.pawnLocations.length - 1] === 0;
+  }
+
+  toString() {
+    return `${this.pawnLocations};${this.stepCount}`;
+  }
+}
+
+function solveBoardGame(board, pawnCount, initialStepCount) {
+  // Modify this graph search invocation per the assignment instructions.
+  const edges = bestFirst(
+    new Vertex(board, Array(pawnCount).fill(board.length), initialStepCount),
+    (vertex) => vertex.heuristic,
+    (vertex) => vertex.isDestination,
+  );
+  return edges !== undefined ? edges.map((edge) => alert(edge.action)) : undefined;
+}
+
+const board = [3,1,1,4,3,1];
+const pawnCount = 2;
+const initialStepCount = 2;
+solveBoardGame(board, pawnCount, initialStepCount)

@@ -1,0 +1,35 @@
+    Input: list A of positive integer number
+    Output: list B is the longest suitable arithmetic sequence of indices
+1.  let B <- undefined
+2.  let M <- undefined
+3.  for (i ∈ (0,|A|) do 
+4.  |  M.set(i, A[i])
+5.  end
+6.  sort(M.values()) in increasin order
+7.  let L <- undifined
+8.  for (k of M.keys()) do
+9.  |  L.push(k)
+10. end
+11. if (|L| < 3) do
+12. |  return L
+13. end
+14. for (i ∈ (0,|L|)) do
+15. |  let max_S <- max_L.slicde(i + 1) - L[i]
+16. |  for (s ∈ (1, max_S)) do
+17. |  |  let arr <- [L[i]]
+18. |  |  if (L[i] + s * (|B| - 1)) > Max_L) do
+19. |  |  |  break
+20. |  |  end
+21. |  |  let t <- 1
+22. |  |  let o <- i + 1
+23. |  |  while (L.includes(L[i] + s * t) from o) do
+24. |  |  |  arr.push(L[i] + s * t)
+25. |  |  |  o <- L.indexOf(L[i] + s * t)
+26. |  |  |  t++
+27. |  |  end
+28. |  |  if (|B| < |arr|) do
+29. |  |  |  B <- arr
+30. |  |  end
+31. |  end
+32. end
+33. return B   	   

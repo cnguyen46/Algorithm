@@ -1,0 +1,69 @@
+function partitions(positiveInteger, allowedParts, forbiddenCount = 0) {
+  if (forbiddenCount === allowedParts.length) {
+    return positiveInteger === 0 ? [new Map()] : [];
+  }
+  const results = [];
+  const part = allowedParts[forbiddenCount];
+  const maximumCount = Math.floor(positiveInteger / part);
+//   alert(`1.Part and Maximum count before recurrence: ${part} and ${maximumCount}`);
+//   alert(`2.PositiveInteger and ForbiddenCount before recurrence: ${positiveInteger} and ${forbiddenCount}`);
+  
+  // This special case is not necessary for correctness, but helps with performance:
+  if (forbiddenCount === allowedParts.length - 1) {
+    // alert(`3.Checking formula (Part * Maximum): ${maximumCount * part}`)
+    if (maximumCount * part === positiveInteger) {
+      results.push(maximumCount === 0 ? new Map() : new Map([[part, maximumCount]]));
+    }
+    // alert("4.This is the temporary results:");
+    // alert(results);
+    return results;
+  }
+  for (let i = maximumCount; i >= 0; --i) {
+    //   alert("***The is where the recurrence starts");
+    //   alert(`@_@Tracking index i: ${i}`);
+    for (const completion of partitions(positiveInteger - i * part, allowedParts, forbiddenCount + 1)) {
+    //   alert(`5.New part and Maximum count after recurrence: ${part} and ${maximumCount}`);
+    //   alert(`6.New positiveInteger and forbiddenCount after recurrence: ${positiveInteger} and ${forbiddenCount}` );
+      if (i > 0) {
+        // alert(`^_^Tracking index i: ${i}`);
+        completion.set(part, i);
+        // alert(`7. Map of completion:`);
+        // alert(completion);
+      }
+      results.push(completion);
+    //   alert('8.This is the results after push:');
+    //   alert(results);
+    }
+  }
+//   alert("9.This is the final results:");
+//   alert(results);
+  return results;
+}
+
+function chooseBoxes(quantity, boxSizes) {
+  let resultMap = new Map();
+  const listOfBoxesChoice = partitions(quantity,boxSizes);
+  let maxSize = listOfBoxesChoice[0].size;
+  for (const eachChoice of listOfBoxesChoice) {
+    //   alert(`1. This is each choice of boxes:`);
+    //   alert(eachChoice);
+      if (eachChoice.size <= maxSize) {
+          maxSize = eachChoice.size;
+          resultMap = new Map(eachChoice);
+        //   alert(`2. This is result Map:`);
+        //   alert(resultMap);
+        //   alert(`3. This is max Size: ${maxSize}`);
+      }
+  }
+  return resultMap;
+}
+
+/* This alert syntax is for checking debug function partitions.
+   Using test cases from VSCode. 
+   This prints out a list of Map of boxes' choices.*/
+alert('This is all the possible option: ', partitions(155,[20, 9, 6],0));
+
+/* This alert syntax is for debug function partitions
+   This gives us the best boxes' choices. */
+alert('This is the best option: ', chooseBoxes(155, [20, 9, 6]));
+// Expect: Map(2) {20 => 1, 9 => 15}

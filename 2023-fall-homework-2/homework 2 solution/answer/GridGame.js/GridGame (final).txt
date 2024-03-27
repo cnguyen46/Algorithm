@@ -1,0 +1,39 @@
+get incidences() {
+    const results = [];
+    // Implement this getter per the assignment instructions.
+    for (const direction of DIRECTIONS) {
+      const newGrid = this.cells.map((row) => row.map((cell) => cell === WALL ? WALL : FLOOR));
+      for (const coordinate of this.getLocations()) {
+        /* Check if the current location of the old grid is PAWN,
+         * and if the current location of the new grid is FLOOR.
+         * If true, then we continue to check the next location from current location of the old grid.
+         * If false, then we move to the next current location of the old grid.
+         * This helps to reduce duplicated checking location of the old grid.*/
+        if (this.at(coordinate) === PAWN && newGrid[coordinate[1]][coordinate[0]] === FLOOR) {
+          let newCoordinate = shift(coordinate, direction);
+          const nextPawn = []; // List X of all pawns' location if the next location is PAWN.
+          while (this.at(newCoordinate) === PAWN) {
+            nextPawn.push(newCoordinate);
+            newCoordinate = shift(newCoordinate, direction);
+          }
+          /* If there exists PAWN in the list X, then update PAWN at those locations in the list X,
+           * If at the latest location, there is a FLOOR, then update PAWN at the latest location,
+           * If at the latest location, there is a WALL, or undefined, then update PAWN at the current postion.*/
+          if (nextPawn.length !== 0) {
+            for (const pawnCoordinate of nextPawn) {
+              newGrid[pawnCoordinate[1]][pawnCoordinate[0]] = PAWN;
+            }
+          }
+          if (this.at(newCoordinate) === FLOOR) {
+            newGrid[newCoordinate[1]][newCoordinate[0]] = PAWN;
+          } else {
+            newGrid[coordinate[1]][coordinate[0]] = PAWN;
+          }
+        }
+      }
+      results.push({
+        child: new Vertex(newGrid),
+      });
+    }
+    return results;
+  }

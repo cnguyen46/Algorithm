@@ -1,0 +1,41 @@
+get incidences() {
+    const results = [];
+    // Implement this getter per the assignment instructions.
+    const checkDuplicated = [];
+    for (const [index, value] of this.pawnLocations.entries()) {
+      if (value >= this.stepCount && !checkDuplicated.includes(value)) {
+        /* If the current pawn moves out of the board, then we stop and start to move another pawn.
+        And if the program checks the same location more than one time continously, then we skip the check.
+        If not, update the new location of the current pawn.*/
+        const updatedLocation = [...this.pawnLocations];
+        updatedLocation[index] = value - this.stepCount;
+        results.push({
+          action: value,
+          child: new Vertex(this.board, updatedLocation, this.board[updatedLocation[index]]),
+          cost: 1,
+        });
+        checkDuplicated.push(value);
+      }
+    }
+    return results;
+  }
+
+  get heuristic() {
+     Implement this getter per the assignment instructions.
+    const optimize = Math.max(...this.board);
+    let distanceToGoal = 0;
+    for (const location of this.pawnLocations) {
+      distanceToGoal += Math.ceil(location  optimize);
+    }
+    return distanceToGoal;
+  }
+
+export function solveBoardGame(board, pawnCount, initialStepCount) {
+  // Modify this graph search invocation per the assignment instructions.
+  const edges = bestFirst(
+    new Vertex(board, Array(pawnCount).fill(board.length), initialStepCount),
+    (vertex) => vertex.heuristic,
+    (vertex) => vertex.isDestination,
+  );
+  return edges !== undefined ? edges.map((edge) => edge.action) : undefined;
+}
