@@ -34,7 +34,7 @@ export function planAttacks(attacks, maximumHealth) {
         best = candidate;
       }
     }
-    backpointers.push(best); // Check this line
+    backpointers.push(best);
   }
 
   const bestAttacks = [];
