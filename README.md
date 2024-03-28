@@ -2,9 +2,9 @@
 ## Introduction
 In CSCE 310, students learn about some basic Algorithm and Data Structure, how to analyze, and calculate the perfomance and times of the algorithm.
 Besides, students learn about some basic searching method, and path finding such as:
-- Exhaust Search,
-- Breadth First Search,
-- Best First Search,
+- Exhaust Search
+- Breadth First Search
+- Best First Search
 - Dynamid Programming
 - Monoid
 - Binary Search Tree
