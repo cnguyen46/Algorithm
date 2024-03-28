@@ -7,6 +7,8 @@ There are 5 homeworks for students to practice. All homeworks are designed, or c
 Download the rar/ zip file to start working.
 The solution has two profile. One has the solution from Prof. Brady, and the other file named "answer" is my solution in detail.
 
-IDE using for the project is VS Code. Progamming language is JavaScript.
+Progamming language is JavaScript.
+
+IDE using for the project is VS Code. 
 Download link: https://code.visualstudio.com/
 
