@@ -12,7 +12,7 @@ Besides, students learn about some basic searching method, and path finding such
 ## Assignments
 There are totally 5 assignments for students to practice. All homeworks are designed, or created by Prof. Brady J. Garvin of University of Nebraska - Lincoln.
 Download the rar/ zip file to start working with the assignment.
-The solution has two profile. One has the solution from Prof. Brady, and the other file named "answer" is my solution, and debug code in detail.
+The solution has two profiles. One has the solution from Prof. Brady, and the other file named "answer" is my solution, and debug code in detail.
 
 JavaScript is mainly used in this class.
 
