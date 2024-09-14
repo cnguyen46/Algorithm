@@ -1,6 +1,5 @@
-# CSCE-310_FALL-2023_HW
 ## Introduction
-In CSCE 310, students learn about some basic Algorithm and Data Structure, how to analyze, and calculate the perfomance and times of the algorithm.
+Students will learn about some basic Algorithm and Data Structure, how to analyze, and calculate the perfomance and times of the algorithm.
 Besides, students learn about some basic searching method, and path finding such as:
 - Exhaust Search
 - Breadth First Search
@@ -19,3 +18,4 @@ JavaScript is mainly used in this class.
 IDE used for the project is VS Code. 
 Download link: https://code.visualstudio.com/
 
+Noted: Theses are the assignment from Fall 2023, class CSCE 310. This should be used for studying purpose, and I won't hold any responsible if you copy my code for submitting the assignment.
