@@ -19,4 +19,4 @@ JavaScript is mainly used in this class.
 IDE used for the project is VS Code. 
 Download link: https://code.visualstudio.com/
 
-NOte: This should be used for learning purpose, not for cheating.
+Note: This should be used for learning purpose, not for cheating.
