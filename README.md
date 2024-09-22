@@ -18,4 +18,4 @@ JavaScript is mainly used in this class.
 IDE used for the project is VS Code. 
 Download link: https://code.visualstudio.com/
 
-Noted: These are the assignment from Fall 2023, class CSCE 310. This should be used for studying purpose, and I won't hold any responsible if you copy my code for submitting the assignment. I encorouge you to do that because this class is extremely important for other advance class if you pursuit studying Algorithm.
+Noted: These are the assignment from Fall 2023, class CSCE 310. This should be used for studying purpose, and I won't hold any responsible if you copy my code for submitting the assignment. I encourage you to do that because this class is extremely important for other advance class if you pursuit studying Algorithm.
